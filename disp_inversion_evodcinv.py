@@ -1,5 +1,5 @@
 """
-Created by Yusong Yuan, China University of Geosciences, 12/13/2025
+Created by Yusong Yuan, China University of Geosciences, 12/03/2025
 
 This script performs 1D phase velocity dispersion curve inversion using the `evodcinv` library
 (Luu, 2023; https://doi.org/10.5281/zenodo.5775193). It is designed to perform inversion to 
@@ -283,4 +283,5 @@ def cal_mean_model(res, dz=0.01, zmax=None):
 if __name__ == "__main__":
     for sta in range(250, 400+1):
         invert_1D(sta)
+
 
