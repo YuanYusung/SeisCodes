@@ -3,7 +3,7 @@
 # Author: Yuan Yusong, China University of Geosciences, Wuhan
 # Date: 2025/12/06
 #
-# This script is desig/ed for eikonal tomography to model phase velocity based on phase travel time data from a 1D linear array of stations. 
+# This script is designed for eikonal tomography to model phase velocity based on phase travel time data from a 1D linear seismic array. 
 #
 # File Structure:
 # - "Data/station_locations.txt": Contains the station IDs and locations in longitude and latitude.
@@ -201,3 +201,4 @@ def stack_and_plot():
 
 if __name__ == "__main__":
     stack_and_plot()
+
