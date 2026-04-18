@@ -16,13 +16,18 @@ def dat2pickle():
     """
     The function reads the ANCs in .dat format (from NoiseCorr_SAC by Huajian Yao) and stores it as an ObsPy Stream object
     """
-    dir = "../CFs/TEST/"
-    fout = "../CFs/Test.pickle"
-    st = Stream()
+    dir = "../CFs/T-T/"
+    fout = "../CFs/ANCs_TT.pickle"
 
+    if os.path.exists(fout):
+        with open(fout,'rb') as handle:
+            st = pickle.load(handle)
+        return st
+    
+    st = Stream()
     for file in os.listdir(dir):
-        if not (file.startswith('ZZ') and file.endswith('dat')):
-            break
+        if not (file.startswith('TT') and file.endswith('dat')):
+            continue
 
         evnm, stnm = file.split('_')[1].split('-')
 
@@ -44,6 +49,8 @@ def dat2pickle():
 
     with open(fout,'wb') as handle:
         pickle.dump(st,handle,protocol=pickle.HIGHEST_PROTOCOL)
+
+    print(len(st))
     return st
 
 if __name__ == "__main__":
