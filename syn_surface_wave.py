@@ -3,7 +3,7 @@
 """
 Created on Thu Mar 26 14:35:07 2026
 
-@author: yusong
+@author: Yusong Yuan ang Hongrui Qiu, CUG
 """
 import numpy as np
 from scipy.fftpack import ifft, fftfreq
