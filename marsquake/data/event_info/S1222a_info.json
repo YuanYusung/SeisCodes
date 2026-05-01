@@ -1,0 +1,14 @@
+{
+  "event_name": "S1222a",
+  "origin_time": "2022-05-04T23:23:07.856945",
+  "p_arrival_time": "2022-05-04T23:27:45.836925",
+  "s_arrival_time": "2022-05-04T23:31:20.152806",
+  "event_latitude": -2.971127527,
+  "event_longitude": 171.9043946,
+  "insight_latitude": 4.502384,
+  "insight_longitude": 135.623447,
+  "distance_deg": 37.01401399264106,
+  "distance_km": 2189.6726337305677,
+  "back_azimuth_deg": 101.00000000553064,
+  "azimuth_deg": 281.50273995185324
+}
