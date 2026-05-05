@@ -1,13 +1,13 @@
 # SeisCodes
 
+SeisCodes is a collection of Python scripts and Jupyter notebooks for seismological data processing and waveform analysis.
+
+This repository has grown out of my ongoing seismology research and will continue to evolve as my work progresses. The current version mainly focuses on dense-array ambient-noise processing, surface-wave dispersion inversion, shear-wave velocity imaging, and InSight Marsquake analysis.
+
 <img width="576" height="384" alt="seismic_codes" src="https://github.com/user-attachments/assets/fa5b4f3f-aed2-459f-82bb-e7d5d562232d" />
-
-SeisCodes is a collection of Python scripts and Jupyter notebooks for seismic array processing, surface-wave analysis, dispersion inversion, and Marsquake waveform analysis.
-
-This repository was developed for my personal research in seismology, with a particular focus on dense-array ambient-noise processing, surface-wave dispersion analysis, shear-wave velocity imaging, and InSight Marsquake waveform analysis.
-
-## Current status
-This repository is under active development. Most scripts are research-oriented and may require minor path or parameter modifications before use. The code is not yet organized as a formal Python package, but the main functions are documented in individual scripts.
+  
+> ⚠️ **Current status**  
+> This repository is under active development. Most scripts are research-oriented and may require minor path or parameter modifications before use. The code is not yet organized as a formal Python package, but the main functions are documented in individual scripts.
 
 ## Repository structure
 ```text
