@@ -66,10 +66,12 @@ def cal_skr(model, pers, mode=0, wave="rayleigh", parameter="velocity_s"):
     for period in pers:
         # Compute sensitivity kernel for the given period
         skr = ps(period, mode=mode, wave=wave, parameter=parameter)
-        kernels.append(skr.kernel)
-        
+
+        # Exclude the last grid point because it is located near the model bottom boundary
+        # and may produce unstable or abnormal sensitivity values.
+        kernels.append(skr.kernel[:-1])
         # Adjust depth for midpoint of each layer
-        depth = skr.depth + 0.5 * model[:, 0]
+        depth = skr.depth[:-1] + 0.5 * model[:-1, 0]
     
     return kernels, depth
 
@@ -96,6 +98,54 @@ def plot_skr(kernels, depth, pers, zmax=85):
     fig.tight_layout()
     plt.savefig("sensitivity_kernel.png", dpi=300)
 
+def plot_skr_2d(kernels, depth, pers, zmax=85, normalize_each_period=False):
+    """
+    Plots 2D sensitivity kernels using pcolormesh.
+
+    X-axis: period
+    Y-axis: depth
+    Color: sensitivity kernel value
+    """
+
+    K = np.asarray(kernels)  # shape: (n_periods, n_depths)
+
+    if normalize_each_period:
+        max_abs = np.max(np.abs(K), axis=1, keepdims=True)
+        max_abs[max_abs == 0] = 1.0
+        K = K / max_abs
+        cbar_label = "Normalized Sensitivity"
+    else:
+        cbar_label = "Sensitivity Kernel"
+
+    pers = np.asarray(pers)
+    depth = np.asarray(depth)
+
+    fig, ax = plt.subplots(figsize=(6.5, 5))
+
+    vmax = np.nanmax(np.abs(K))
+    vmin = -vmax
+
+    im = ax.pcolormesh(
+        pers,
+        depth,
+        K.T,
+        shading="auto",
+        cmap="coolwarm",
+        vmin=vmin,
+        vmax=vmax
+    )
+
+    ax.set_xlabel("Period (s)")
+    ax.set_ylabel("Depth (km)")
+    ax.set_title("2D Sensitivity Kernel")
+    ax.set_ylim(zmax, 0)
+
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label(cbar_label)
+
+    fig.tight_layout()
+    plt.savefig("sensitivity_kernel_2d.png", dpi=300)
+    plt.show()
 # An example velocity model with thickness, Vp, Vs, and density (units: km, km/s, km/s, g/cm3)
 velocity_model = np.array([
    [10.0, 7.00, 3.50, 2.00],
@@ -108,18 +158,47 @@ velocity_model = np.array([
    [10.0, 9.60, 4.80, 2.00],
    [10.0, 9.50, 4.75, 2.00],
 ])
-
+velocity_model[:,3]*=3
 # Convert the velocity model to a grid model with a small depth increment
-model = grid_model(velocity_model, dz=0.5)
+model = grid_model(velocity_model, dz=2)
 
 # Apply Gaussian smoothing to the model for better continuity
-smoothed_model = ndimage.gaussian_filter1d(model, sigma=10, axis=0)
+smoothed_model = ndimage.gaussian_filter1d(model, sigma=5, axis=0)
 
-# Define periods for which we want to compute the sensitivity kernels
+# Define periods for 1D sensitivity kernel curves
 pers = [10.0, 20.0, 25.0, 30.0]
 
 # Compute the sensitivity kernels for each period
-kernels, depth = cal_skr(smoothed_model, pers, mode=0, wave="rayleigh", parameter="velocity_s")
+kernels, depth = cal_skr(
+    smoothed_model,
+    pers,
+    mode=0,
+    wave="rayleigh",
+    parameter="velocity_p"
+)
 
-# Plot the sensitivity kernels and save the plot
+# Plot 1D sensitivity kernels
 plot_skr(kernels, depth, pers)
+
+
+# ---------------------------------------------------------
+# 2D sensitivity kernel plot
+# Use denser period sampling for a smoother 2D image
+# ---------------------------------------------------------
+pers_2d = np.linspace(10, 30.0, 21)
+
+kernels_2d, depth_2d = cal_skr(
+    smoothed_model,
+    pers_2d,
+    mode=0,
+    wave="rayleigh",
+    parameter="velocity_s"
+)
+
+plot_skr_2d(
+    kernels_2d,
+    depth_2d,
+    pers_2d,
+    zmax=85,
+    normalize_each_period=False
+)
