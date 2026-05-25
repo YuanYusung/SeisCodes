@@ -158,7 +158,7 @@ velocity_model = np.array([
    [10.0, 9.60, 4.80, 2.00],
    [10.0, 9.50, 4.75, 2.00],
 ])
-velocity_model[:,3]*=3
+
 # Convert the velocity model to a grid model with a small depth increment
 model = grid_model(velocity_model, dz=2)
 
@@ -174,7 +174,7 @@ kernels, depth = cal_skr(
     pers,
     mode=0,
     wave="rayleigh",
-    parameter="velocity_p"
+    parameter="velocity_s"
 )
 
 # Plot 1D sensitivity kernels
